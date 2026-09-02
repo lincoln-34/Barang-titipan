@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
+    <title>Daftar Barang Jengukan</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .image-upload-wrapper {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .image-upload-wrapper input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .preview-img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .btn {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .item-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .item-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .item-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #eee;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .item-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .status-badge {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #e0e7ff;
+            color: var(--primary);
+        }
+
+        @media (max-width: 480px) {
+            .item-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .item-card img {
+                width: 100%;
+                height: 160px;
+            }
+        }
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .summary-item {
+            background: var(--bg);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .summary-item .count {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .summary-item .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Barang Titipan</h1>
+        <p>Daftar barang yang perlu dibawa saat penjengukan</p>
+    </header>
+
+    
+    <!-- Daftar Barang -->
+    <h2 style="font-size: 1.2rem; margin-bottom: 12px;">Daftar Titipan</h2>
+    <div class="item-list" id="itemList">
+        <!-- Contoh Item -->
+        <div class="item-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeLoVnoMRPQOXQGsMyFSqP43n9jrd_XeDeivpJ0LIoFQ&s" alt="Contoh">
+            <div class="item-info">
+                <h3>Payung</h3>
+                
+                <span class="status-badge">Perlu Dibawa</span>
+            </div>
+        </div>
+        <div class="item-card">
+            <img src="https://id-test-11.slatic.net/p/5f664c42fb19113b5edc0aa40666bc97.jpg" alt="Contoh">
+            <div class="item-info">
+                <h3>Deterjent</h3>
+                <span class="status-badge">Perlu Dibawa</span>
+            </div>
+        </div>
+        <div class="item-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSx8sEBCP9IOnCvrjjOQKxiLcuedR6BW8m5kBdY1_zGw&s" alt="Contoh">
+            <div class="item-info">
+                <h3>CD</h3>
+                <span class="status-badge">Perlu Dibawa</span>
+            </div>
+        </div>
+        <div class="item-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyjHJO8GgtK0STslkGxfNYktcxoMsg-VXHW7wAk3JUSS_ivCmHqmUWhL0&s=10" alt="Contoh">
+            <div class="item-info">
+                <h3>Jajanan</h3>
+                <p>Kerupuk seblak, nana, makaroni, dll (kalo ada)</p>
+                <span class="status-badge">Perlu Dibawa</span>
+            </div>
+        </div>
+        <div class="item-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToVVhbV-IBnCHUsD5NKUwh7pstqXXz0OM5pH-Kig8sVCFXRrZON975LfI&s=10" alt="Contoh">
+            <div class="item-info">
+                <h3>Rondoletti</h3>
+                <p>Kalau bisa samain sama yang digambar</p>
+                <span class="status-badge">Perlu Dibawa</span>
+            </div>
+        </div>
+        <div class="item-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw7ocnIiugCmm_drRfsXjwUWbbgYI6qHa79dS7CBhOyg&s=10" alt="Contoh">
+            <div class="item-info">
+                <h3>Batre ultrofire</h3>
+                <p>batre nya ada di bawah mesin printernya abi di garasi.</p>
+                <span class="status-badge">Perlu Dibawa</span>
+            </div>
+        </div>
+        <div class="item-card">
+            <img src="https://id-test-11.slatic.net/p/1e0320edf54bbbd836246eadf05dd07f.jpg" alt="Contoh">
+            <div class="item-info">
+                <h3>Ember kecil biru</h3>
+                <p>Ada di deket mesin cuci</p>
+                <span class="status-badge">Perlu Dibawa</span>
+            </div>
+        </div>
+        <div class="item-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQARWpkiok8ilfvwKB1F0vdkEUZonGid7gaJyra4iFyBA&s=10" alt="Contoh">
+            <div class="item-info">
+                <h3>Pelet ikan</h3>
+                <p>Bawain kalo ada banyak di rumah kalo cuma sedikit nanti mail beli</p>
+                <span class="status-badge">Opsional</span>
+            </div>
+        </div>
+        <div class="item-card">
+            <img src="https://down-id.img.susercontent.com/file/id-11134207-7r98u-lp3sc00cdaod00" alt="Contoh">
+            <div class="item-info">
+                <h3>Susu kambing etawa</h3>
+                <p>Kalo ada yang original 1kg kalo nggak yang gula aren</p>
+                <span class="status-badge">Perlu Dibawa</span>
+            </div>
+        </div>
+        <div class="item-card">
+            <img src="https://down-id.img.susercontent.com/file/id-11134207-7r98r-lrgysmp3j9ys4b" alt="Contoh">
+            <div class="item-info">
+                <h3>Pelembab tangan </h3>
+                <p>Buat pas habis nyuci kadang tangan kering banget</p>
+                <span class="status-badge">Opsional</span>
+            </div>
+        </div>
+    </div>
+    <!-- Total Barang Ringkasan -->
+    <div class="summary-card">
+        <div class="summary-title">Ringkasan Barang</div>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <div class="count" id="totalItems">10</div>
+                <div class="label">Total Barang</div>
+            </div>
+            <div class="summary-item">
+                <div class="count" id="mandatoryItems">8</div>
+                <div class="label">Perlu Dibawa</div>
+            </div>
+            <div class="summary-item">
+                <div class="count" id="optionalItems">2</div>
+                <div class="label">Opsional</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const itemImageInput = document.getElementById('itemImage');
+    const imagePreview = document.getElementById('imagePreview');
+    const uploadText = document.getElementById('uploadText');
+    const itemForm = document.getElementById('itemForm');
+    const itemList = document.getElementById('itemList');
+
+    // Preview Foto saat di-upload
+    itemImageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                imagePreview.src = event.target.result;
+                imagePreview.style.display = 'block';
+                uploadText.style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Tambah Item ke Daftar
+    itemForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('itemName').value;
+        const note = document.getElementById('itemNote').value;
+        const imgSrc = imagePreview.src && imagePreview.style.display !== 'none' 
+            ? imagePreview.src 
+            : 'https://via.placeholder.com/80?text=No+Image';
+
+        const itemCard = document.createElement('div');
+        itemCard.className = 'item-card';
+        itemCard.innerHTML = `
+            <img src="${imgSrc}" alt="${name}">
+            <div class="item-info">
+                <h3>${name}</h3>
+                <p>${note || 'Tidak ada catatan tambahan.'}</p>
+                <span class="status-badge">Perlu Dibawa</span>
+            </div>
+        `;
+
+        itemList.prepend(itemCard);
+
+        // Reset Form
+        itemForm.reset();
+        imagePreview.style.display = 'none';
+        uploadText.style.display = 'block';
+    });
+
+</script>
+
+</body>
+</html>
